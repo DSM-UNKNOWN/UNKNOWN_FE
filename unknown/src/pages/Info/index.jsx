@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { color } from "../../styles/theme";
 
@@ -7,13 +8,18 @@ import State from "../../components/State";
 import Button from "../../components/Button";
 
 const Info = () => {
+  const navigate = useNavigate();
+
+  const onBack = () => {
+    navigate("/list");
+  }
 
   return (
     <Background>
       <FontDiv>
         <State innerText="DATA" />
       </FontDiv>
-      <Fixed onClick={() => console.log("뒤로가기 클릭")}>
+      <Fixed onClick={() => onBack()}>
         <Back />
       </Fixed>
       <Center>
