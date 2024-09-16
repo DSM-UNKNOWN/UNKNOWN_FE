@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { color } from "../../styles/theme";
 
 import State from "../../components/State";
 
 const List = () => {
+  const navigate = useNavigate();
+
+  const onData = () => {
+    navigate("/info");
+  }
 
   return (
     <Background>
@@ -12,7 +18,7 @@ const List = () => {
         <State innerText="LIST" />
       </FontDiv>
       <Center>
-        <Column>
+        <Column onClick={() => onData()}>
           <Left>
             <Name>000</Name>
             <Age>00세</Age>
@@ -105,13 +111,15 @@ export const Center = styled.div`
   justify-content: center;
 `
 
-export const Column = styled.div`
+export const Column = styled.button`
   width: 38vw;
   height: 12vh;
+  border: none;
   border-bottom: solid 1px ${color.Gray[2]};
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: ${color.White};
 `
 
 export const Left = styled.div`

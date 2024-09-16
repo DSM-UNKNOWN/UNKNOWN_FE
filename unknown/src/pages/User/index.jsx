@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import State from "../../components/State";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
+  const onSignup = () => {
+    navigate("/login");
+  }
 
   return (
     <Background>
@@ -16,7 +22,7 @@ const Signup = () => {
           <Input innerText="비밀번호" state="password"/>
           <Input innerText="비밀번호 확인" state="password"/>
         </InputDiv>
-        <Button innerText="회원가입" onClick={() => console.log('회원가입 클릭')}/>
+        <Button innerText="회원가입" onClick={() => onSignup()}/>
       </Center>
     </Background>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { color } from "../../styles/theme";
 import styled from "styled-components";
 
@@ -7,6 +8,11 @@ import WebImg from "../../assets/WebImg.png";
 import Button from "../../components/Button";
 
 const Before = () => {
+  const navigate = useNavigate();
+
+  const onUnknown = () => {
+    navigate("/login");
+  }
 
   return (
     <Background>
@@ -25,7 +31,7 @@ const Before = () => {
         <FontMedium>환자 정보를 쉽게</FontMedium>
         <img src={WebImg} width={900} />
       </Bottom>
-      <Button innerText="UNKNOWN 시작하기" onClick={() => console.log('시작하기 클릭')} />
+      <Button innerText="UNKNOWN 시작하기" onClick={() => onUnknown()} />
     </Background>
   );
 }

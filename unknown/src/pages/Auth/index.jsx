@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { color } from "../../styles/theme";
 
@@ -7,6 +8,15 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const onLogin = () => {
+    navigate("/list");
+  }
+
+  const onSignup = () => {
+    navigate("/signup");
+  }
 
   return (
     <Background>
@@ -17,8 +27,8 @@ const Login = () => {
           <Input innerText="비밀번호" state="password"/>
         </InputDiv>
         <InputDiv>
-          <Button innerText="로그인" onClick={() => console.log('로그인 클릭')}/>
-          <Font>아직 계정이 없으신가요?<Color onClick={() => console.log('회원가입 클릭')}>회원가입</Color></Font>
+          <Button innerText="로그인" onClick={() => onLogin()}/>
+          <Font>아직 계정이 없으신가요?<Color onClick={() => onSignup()}>회원가입</Color></Font>
         </InputDiv>
       </Center>
     </Background>
