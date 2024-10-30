@@ -1,15 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+
+import postUserSignup from "../../apis/postUserSignup";
+
 import State from "../../components/State";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [signupData, setSignupData] = useState({
+    userid: "",
+    userpw: "",
+    state: "병원",
+    connect: "",
+    userpwCheck: "",
+  });
 
-  const onSignup = () => {
-    navigate("/login");
+  useEffect(() => {
+    console.log(signupData);
+  }, [signupData]);
+
+  const handleInputChange = (text, field) => {
+    setSignupData(prevData => ({
+      ...prevData,
+      [field]: text
+    }));
+  }
+
+  const onSignup = async () => {
+    if(signupData !== null) {
+      try {
+        const signupState = await postUserSignup(signupData);
+
+        if (signupState) {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.log("회원가입 오류");
+      }
+    }
   }
 
   return (
@@ -17,10 +48,10 @@ const Signup = () => {
       <Center>
         <State innerText="SIGNUP" />
         <InputDiv>
-          <Input innerText="아이디" state="text" />
-          <Input innerText="병원 이름" state="text" />
-          <Input innerText="비밀번호" state="password"/>
-          <Input innerText="비밀번호 확인" state="password"/>
+          <Input innerText="아이디" state="text" onGetInText={(text) => handleInputChange(text, "userid")} />
+          <Input innerText="병원 이름" state="text" onGetInText={(text) => handleInputChange(text, "connect")} />
+          <Input innerText="비밀번호" state="password" onGetInText={(text) => handleInputChange(text, "userpw")}/>
+          <Input innerText="비밀번호 확인" state="password" onGetInText={(text) => handleInputChange(text, "userpwCheck")}/>
         </InputDiv>
         <Button innerText="회원가입" onClick={() => onSignup()}/>
       </Center>
