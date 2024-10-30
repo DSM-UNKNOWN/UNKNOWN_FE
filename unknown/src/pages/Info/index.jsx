@@ -7,8 +7,44 @@ import Back from "../../assets/Back";
 import State from "../../components/State";
 import Button from "../../components/Button";
 
+import getPatientData from "../../apis/getPatientData";
+import patchPatientData from "../../apis/patchPatientData";
+
 const Info = () => {
   const navigate = useNavigate();
+  const [id, setId] = useState();
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+  useEffect(() => {
+    console.log(list);
+  }, [list]);
+
+  useEffect(() => {
+    console.log(id);
+  }, [id]);
+
+  const getList = async () => {
+    const data = await getPatientData();
+    if(data) {
+      setList(data);
+      setId(localStorage.getItem("id"));
+    }
+  }
+
+  const onPress = async () => {
+    const text = {
+      "id": id,
+      "state": "confm"
+    }
+    const data = await patchPatientData(text);
+    if(data) {
+      navigate("/list");
+    }
+  }
 
   const onBack = () => {
     navigate("/list");
@@ -24,31 +60,31 @@ const Info = () => {
       </Fixed>
       <Center>
         <Top>
-          <Name>000</Name>
-          <Age>(00세)</Age>
+          <Name>{list && id ? list[id-1].hospitalName : null}</Name>
+          <Age>({list && id ? list[id-1].hospitalMonth : null}세)</Age>
         </Top>
         <DataDiv>
           <Tag>혈액형 :</Tag>
-          <Data>A형</Data>
+          <Data>{list && id ? list[id-1].hospitalBlood : null}형</Data>
         </DataDiv>
         <DataDiv>
           <Tag>부상 부위 :</Tag>
-          <Data>어깨</Data>
+          <Data>{list && id ? list[id-1].hospitalInjury : null}</Data>
         </DataDiv>
         <DataDiv>
           <Tag>질병 여부 :</Tag>
-          <Data>당뇨</Data>
+          <Data>{list && id ? list[id-1].hospitalDisease : null}</Data>
         </DataDiv>
         <DataDiv>
           <Tag>수술 여부 :</Tag>
-          <Data>십자인대 파열 재건술</Data>
+          <Data>{list && id ? list[id-1].hospitalSurgery : null}</Data>
         </DataDiv>
         <DataDiv>
           <Tag>구급대 연락처 :</Tag>
-          <Data>010-1234-5678</Data>
+          <Data>{list && id ? list[id-1].phone : null}</Data>
         </DataDiv>
         <ButtonDiv>
-          <Button innerText="승인하기" onClick={() => console.log('승인 클릭')}/>
+          <Button innerText="승인하기" onClick={() => onPress()}/>
         </ButtonDiv>
       </Center>
     </Background>
