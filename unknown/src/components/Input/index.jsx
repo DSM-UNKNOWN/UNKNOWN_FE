@@ -3,9 +3,18 @@ import { styled } from "styled-components";
 import { color } from "../../styles/theme";
 
 const Input = (props) => {
+  const [value, setValue] = useState();
+
+  const onChangeData = (e) => {
+    setValue(e.target.value);
+  }
+
+  useEffect(() => {
+    props.onGetInText(value);
+  }, [value]);
 
   return (
-    <InputDiv type={props.state} placeholder={props.innerText}></InputDiv>
+    <InputDiv type={props.state} placeholder={props.innerText} onChange={onChangeData}></InputDiv>
   );
 }
 
