@@ -4,11 +4,29 @@ import { styled } from "styled-components";
 import { color } from "../../styles/theme";
 
 import State from "../../components/State";
+import getPatientData from "../../apis/getPatientData";
 
 const List = () => {
   const navigate = useNavigate();
+  const [list, setList] = useState([]);
 
-  const onData = () => {
+  useEffect(() => {
+    getList();
+  }, []);
+
+  useEffect(() => {
+    console.log(list);
+  }, [list]);
+
+  const getList = async () => {
+    const data = await getPatientData();
+    if(data) {
+      setList(data);
+    }
+  }
+
+  const onData = (data) => {
+    localStorage.setItem("id", JSON.stringify(data));
     navigate("/info");
   }
 
@@ -18,62 +36,22 @@ const List = () => {
         <State innerText="LIST" />
       </FontDiv>
       <Center>
-        <Column onClick={() => onData()}>
-          <Left>
-            <Name>000</Name>
-            <Age>00세</Age>
-          </Left>
-          <StateLow>승인 중</StateLow>
-        </Column>
-        <Column>
-          <Left>
-            <Name>000</Name>
-            <Age>00세</Age>
-          </Left>
-          <StateLow>승인 중</StateLow>
-        </Column>
-        <Column>
-          <Left>
-            <Name>000</Name>
-            <Age>00세</Age>
-          </Left>
-          <StateLow>승인 중</StateLow>
-        </Column>
-        <Column>
-          <Left>
-            <Name>000</Name>
-            <Age>00세</Age>
-          </Left>
-          <StateHigh>승인 중</StateHigh>
-        </Column>
-        <Column>
-          <Left>
-            <Name>000</Name>
-            <Age>00세</Age>
-          </Left>
-          <StateHigh>승인 중</StateHigh>
-        </Column>
-        <Column>
-          <Left>
-            <Name>000</Name>
-            <Age>00세</Age>
-          </Left>
-          <StateHigh>승인 중</StateHigh>
-        </Column>
-        <Column>
-          <Left>
-            <Name>000</Name>
-            <Age>00세</Age>
-          </Left>
-          <StateHigh>승인 중</StateHigh>
-        </Column>
-        <Column>
-          <Left>
-            <Name>000</Name>
-            <Age>00세</Age>
-          </Left>
-          <StateHigh>승인 중</StateHigh>
-        </Column>
+        {list.map((item , index) => {
+            return(
+              <Column onClick={() => onData(item.id)}>
+                <Left>
+                  <Name>{item.hospitalName}</Name>
+                  <Age>{item.hospitalMonth}세</Age>
+                </Left>
+                {item.state == 'confm' ?
+                <StateHigh>승인 완료</StateHigh>
+                :
+                <StateLow>대기 중</StateLow>
+                }
+              </Column>
+            );
+          }
+        )}
       </Center>
     </Background>
   );
