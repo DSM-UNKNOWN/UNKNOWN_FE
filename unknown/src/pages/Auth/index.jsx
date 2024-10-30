@@ -3,15 +3,42 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { color } from "../../styles/theme";
 
+import postUserLogin from "../../apis/postUserLogin";
+
 import State from "../../components/State";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loginData, setLoginData] = useState({
+    userid: "",
+    userpw: "",
+  });
 
-  const onLogin = () => {
-    navigate("/list");
+  useEffect(() => {
+    console.log(loginData);
+  }, [loginData]);
+
+  const handleInputChange = (text, field) => {
+    setLoginData(prevData => ({
+      ...prevData,
+      [field]: text
+    }));
+  }
+
+  const onLogin = async () => {
+    if(loginData !== null) {
+      try {
+        const loginState = await postUserLogin(loginData);
+
+        if (loginState) {
+          navigate("/list");
+        }
+      } catch (error) {
+        console.log("로그인 오류");
+      }
+    }
   }
 
   const onSignup = () => {
@@ -23,8 +50,8 @@ const Login = () => {
       <Center>
         <State innerText="LOGIN" />
         <InputDiv>
-          <Input innerText="아이디" state="text" />
-          <Input innerText="비밀번호" state="password"/>
+          <Input innerText="아이디" state="text" onGetInText={(text) => handleInputChange(text, "userid")} />
+          <Input innerText="비밀번호" state="password" onGetInText={(text) => handleInputChange(text, "userpw")}/>
         </InputDiv>
         <InputDiv>
           <Button innerText="로그인" onClick={() => onLogin()}/>
